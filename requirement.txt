@@ -1,6 +1,8 @@
 alembic
 fastapi
 fastmcp
+langchain
+langchain-ollama
 langgraph
 pgvector
 psycopg2-binary
