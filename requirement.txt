@@ -1,0 +1,7 @@
+alembic
+fastapi
+fastmcp
+langgraph
+pgvector
+psycopg2-binary
+sqlalchemy

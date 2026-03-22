@@ -1,0 +1,14 @@
+# docker/mcp.Dockerfile
+
+FROM python:3.12
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY mcp_server/ ./mcp_server/
+
+WORKDIR /app/mcp_server
+
+CMD ["python", "server.py"]
