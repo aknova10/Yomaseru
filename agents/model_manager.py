@@ -10,7 +10,7 @@ class ModelManager:
         self.api_version = settings.api_version
         self.endpoint = settings.endpoint
         self.temperature = settings.temperature
-        self.max_tokens = settings.mac_tokens
+        self.max_tokens = settings.max_tokens
 
     def select_model(self) -> BaseChatModel:
 

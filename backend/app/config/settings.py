@@ -10,6 +10,13 @@ class Settings:
     anki_connect_url: str = None
     anki_deck_name: str = None
 
+    #LLM
+    model = "qwen3.5"
+    model_provider = "ollama"
+    api_version = None
+    endpoint = None
+    temperature = None
+    max_tokens = None
 
     #Postgres
     db_host: str = None
