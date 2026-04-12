@@ -14,9 +14,9 @@ services:
     env_file:
       - ../.env
     depends_on:
-      - postgres
+      # - postgres
       - mcp
-      - ollama
+      # - ollama
     volumes:
       - ../backend:/app/backend  # hot reload (dev)
     restart: always
@@ -34,44 +34,44 @@ services:
       - ../mcp_server:/app/mcp_server
     restart: always
 
-  postgres:
-    build:
-      context: ..
-      dockerfile: docker/postgres.Dockerfile
-    container_name: yomaseru_postgres
-    environment:
-      DB_NAME: ${DB_NAME}
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+  # postgres:
+  #   build:
+  #     context: ..
+  #     dockerfile: docker/postgres.Dockerfile
+  #   container_name: yomaseru_postgres
+  #   environment:
+  #     DB_NAME: ${DB_NAME}
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
 
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+  #     DB_USER: ${DB_USER}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
 
   frontend:
     build:
       context: ..
-      dockerfile: docker/frontend-streamlit.Dockerfile
+      dockerfile: docker/frontend.Dockerfile
     container_name: yomaseru_frontend
     ports:
       - "8501:8501"
     depends_on:
       - backend
     volumes:
-      - ../frontend_streamlit:/app/frontend_streamlit
+      - ../frontend:/app/frontend
     restart: always
 
-  ollama:
-    image: ollama/ollama
-    container_name: yomaseru_ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    restart: always
+  # ollama:
+  #   image: ollama/ollama
+  #   container_name: yomaseru_ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   restart: always
 
 volumes:
   postgres_data:

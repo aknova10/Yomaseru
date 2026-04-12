@@ -42,6 +42,12 @@ class BaseAgent:
         return await self.agent.ainvoke({"messages" : messages}, config=config)
     
 
+class StoryDirectorAgent(BaseAgent):
+    system_prompt = """You are a story director. Your role is to create a list of events in some chronological order, such that it can be written into a story. 
+    """
+
+    def __init__(self, response_format=StoryDraftFormat, system_prompt=system_prompt):
+        super().__init__(response_format=response_format, system_prompt=system_prompt)
 class StoryWriterAgent(BaseAgent):
     system_prompt = """You are a Japanese short story writer who is capabale of writing stories with just given list of vocabulary. 
     Draft meaningfull stroies with morals."""

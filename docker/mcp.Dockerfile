@@ -11,4 +11,5 @@ COPY mcp_server/ ./mcp_server/
 
 WORKDIR /app/mcp_server
 
-CMD ["python", "server.py"]
+# CMD ["python", "server.py"]
+CMD ["fastmcp", "run", "server.py:mcp", "--transport", "http", "--host", "0.0.0.0", "--port", "9000"]

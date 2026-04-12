@@ -1,45 +1,57 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Type, Tuple, Optional
+from pydantic_settings import BaseSettings, SettingsConfigDict, PydanticBaseSettingsSource
 from functools import lru_cache
 
-class Settings:
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
     
     #MCP
-    mcp_server_url: str = None
+    mcp_server_url: Optional[str] = None
 
     #Anki
-    anki_connect_url: str = None
-    anki_deck_name: str = None
+    anki_connect_url: Optional[str] = None
+    anki_deck_name: Optional[str] = None
 
     #LLM
-    model = "qwen3.5"
-    model_provider = "ollama"
-    api_version = None
-    endpoint = None
-    temperature = None
-    max_tokens = None
+    model: Optional[str] = None
+    model_provider: Optional[str] = None
+    api_version: Optional[str] = None
+    endpoint: Optional[str] = None
+    temperature: Optional[float] = None
+    max_tokens: Optional[int] = None
 
     #Postgres
-    db_host: str = None
-    db_port: int = None
-    db_name: str = None
-    db_user: str = None
-    db_password: str = None
+    db_host: Optional[str] = None
+    db_port: Optional[int] = None
+    db_name: Optional[str] = None
+    db_user: Optional[str] = None
+    db_password: Optional[str] = None
     @property
-    def database_url(self) -> str:
+    def database_url(self) -> Optional[str]:
         return f"postgresql+psycopg2://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
 
     #Logging
-    log_level: str = "INFO"
+    log_level: Optional[str] = "INFO"
     
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False
-    )
+    @classmethod
+    def settings_customise_source(
+        cls,
+        settings_cls: Type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource
+    ) -> Tuple[PydanticBaseSettingsSource, ...]:
+        #Priority : Init args > Env vars > .env file > others(e.g. Azure Keyvault if implemented)
+        return init_settings, env_settings, dotenv_settings
+    
         
 
-@lru_cache
-def get_settings() -> Settings:
-    return Settings() 
+# @lru_cache
+# def get_settings() -> Settings:
+#     return Settings() 
 
-settings = get_settings()
+settings = Settings()
+
+if __name__ == "__main__":
+    print(settings.model)

@@ -4,12 +4,12 @@ FROM python:3.12
 
 WORKDIR /app
 
-COPY frontend_streamlit/ ./frontend_streamlit/
+COPY frontend/ ./frontend/
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt \
     && pip install streamlit requests
 
-WORKDIR /app/frontend_streamlit
+WORKDIR /app/frontend
 
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

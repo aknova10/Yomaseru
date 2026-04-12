@@ -14,7 +14,10 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ ./backend/
+COPY agents/ ./agents/
 
 WORKDIR /app/backend
+
+ENV PYTHONPATH=/app
 
 CMD [ "bash", "start.sh" ]
